@@ -140,17 +140,23 @@ def extenso_para_numero(texto):
     texto = texto.replace(' e ', 'E').replace(' ', '')
 
     # acha quantos mil tem
-    valor_mil = 0
-    milhares = texto.split('mil')[0].split('E')
-    for numero in milhares:
-        valor = mapa_numeros.get(numero, None)
-        valor_mil += valor
+    if 'mil' in texto:
+        valor_mil = 0
+        milhares = texto.split('mil')[0].split('E')
+        for numero in milhares:
+            valor = mapa_numeros.get(numero, None)
+            valor_mil += valor
 
-    valor_mil = valor_mil * 1000
-
-    # acha entre 0 e 999
+        valor_mil = valor_mil * 1000
+        
+        # acha entre 0 e 999
+        centenas = texto.split('mil')[1].split('reais')[0].split('E')
+    
+    else:
+        valor_mil = 0
+        centenas = texto.split('reais')[0].split('E')
     valor_centenas = 0
-    centenas = texto.split('mil')[1].split('reais')[0].split('E')
+    
     for numero in centenas:
         valor = mapa_numeros.get(numero, None)
         valor_centenas += valor
