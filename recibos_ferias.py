@@ -47,7 +47,7 @@ def main():
         messagebox.showinfo("Processo Finalizado", "O processo foi concluído com sucesso!")
 
     except Exception as e:
-        print('Erro no processo {e}')
+        print(f'Erro no processo {e}')
         messagebox.showerror("Erro", e)
     
 
@@ -60,7 +60,7 @@ def get_files():
 
     if not pdf_files:
         raise ValueError("Nenhum arquivo PDF encontrado no diretório atual.")   
-    print('Arquivos encontrados: ', pdf_files)
+    print('Arquivos encontrados: ', pdf_files) 
     return pdf_files
 
 
@@ -94,7 +94,7 @@ def get_data(texto):
             data = data.replace(pt, en)
         data_objeto = datetime.strptime(data, "%d de %B de %Y")
 
-        data_formatada = data_objeto.strftime("%d/%m/%Y")
+        data_formatada = data_objeto.strftime("%d/%m/%y")
         datas.append(data_formatada)
     return datas
 
@@ -105,7 +105,9 @@ def get_valor(texto):
     for page in texto:
         valor = page[6].split('Valor')[0]
         valor = extenso_para_numero(valor.strip())
-        valores.append("{:.2f}".format(valor))
+        valor = "{:.2f}".format(valor)
+        valor = str(valor).replace('.', ',')
+        valores.append(valor)
     return valores
 
 
@@ -168,7 +170,6 @@ def extenso_para_numero(texto):
     
     total = valor_mil + valor_centenas + valor_centavos
     return total
-
 
 if __name__ == '__main__':
     main()
