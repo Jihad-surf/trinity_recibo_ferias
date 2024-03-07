@@ -4,6 +4,7 @@ from datetime import datetime
 import pandas as pd
 import tkinter as tk
 from tkinter import messagebox
+import re
 
 mapa_numeros = {
     "zero": 0, "um": 1, "dois": 2, "três": 3, "tres":3,  "quatro": 4,
@@ -102,12 +103,19 @@ def get_data(texto):
 def get_valor(texto):
     """Retorna uma lista com os valores extraídos do texto."""
     valores = []
+    regex = r"R\$\s*(\d{1,3}(?:\.\d{3})*,\d{2})"
+    
     for page in texto:
-        valor = page[6].split('Valor')[0]
-        valor = extenso_para_numero(valor.strip())
-        valor = "{:.2f}".format(valor)
-        valor = str(valor).replace('.', ',')
-        valores.append(valor)
+        valor = re.search(regex, page[5])
+        if valor:
+            valor = valor.group(1).replace('.', '')
+            valores.append(valor)
+        else:
+            valor = page[6].split('Valor')[0]
+            valor = extenso_para_numero(valor.strip())
+            valor = "{:.2f}".format(valor)
+            valor = str(valor).replace('.', ',')
+            valores.append(valor)
     return valores
 
 
